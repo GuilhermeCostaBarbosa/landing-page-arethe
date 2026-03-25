@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estúdio Arethê | Aula Experimental</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-purple': '#7C3AED', 
+                        'primary-dark': '#4C1D95',   
+                        'purple-light': '#F3E8FF',   
+                        'purple-50': '#FAF5FF',
+                        'accent-green': '#10B981',   
+                        'green-light': '#D1FAE5',
+                        'chumbo': '#1E293B',
+                        'bg-main': '#F8FAFC'         
+                    },
+                    boxShadow: {
+                        'soft': '0 20px 40px -15px rgba(124, 58, 237, 0.08)',
+                        'float': '0 25px 50px -12px rgba(0, 0, 0, 0.08)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: theme('colors.bg-main');
+            color: theme('colors.chumbo');
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .fade-up { transform: translateY(40px); }
+        .fade-right { transform: translateX(-40px); }
+        .fade-left { transform: translateX(40px); }
+        .scale-in { transform: scale(0.95); }
+
+        .is-visible {
+            opacity: 1;
+            transform: translate(0) scale(1);
+        }
+
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        
+        .blob-shape {
+            border-radius: 43% 57% 70% 30% / 30% 30% 70% 70%;
+        }
+
+        /* Classes para a animação do FAQ */
+        .faq-wrapper {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.3s ease-in-out;
+        }
+        
+        .faq-wrapper.is-open {
+            grid-template-rows: 1fr;
+        }
+        
+        .faq-inner {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col pt-24">
+
+    <header class="fixed top-0 w-full bg-white/90 backdrop-blur-md z-50 border-b border-gray-100 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+            <span class="text-2xl font-extrabold tracking-tight text-primary-purple">ARETHÊ</span>
+            <a href="#" target="_blank" class="whatsapp-btn hidden md:inline-flex items-center justify-center gap-2 bg-accent-green text-white font-semibold py-2.5 px-6 rounded-full hover:bg-emerald-600 transition-colors text-sm shadow-sm">
+                <svg class="w-4 h-4 shrink-0 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                Agendar Agora
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <section class="relative px-6 py-12 md:py-24 bg-white overflow-hidden">
+             <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-light blob-shape blur-3xl -z-10 translate-x-1/3 -translate-y-1/4"></div>
+             <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-purple-50 blob-shape blur-3xl -z-10 -translate-x-1/3 translate-y-1/4"></div>
+
+            <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+                <div class="text-center md:text-left animate-on-scroll fade-up relative z-10">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6 text-slate-900 tracking-tight">
+                        O único centro integrado com acompanhamento individual para <span class="text-primary-purple">dores, posturas e reabilitações!</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-slate-600 mb-10 font-light leading-relaxed">
+                        Tenha o protocolo de treino perfeito para reduzir suas dores e melhorar sua qualidade de vida — mesmo com a rotina puxada.
+                    </p>
+                    
+                    <ul class="space-y-4 mb-10 inline-block text-left">
+                        <li class="flex items-center gap-4 text-slate-700 font-medium text-lg">
+                            <div class="bg-purple-50 p-2 rounded-full shadow-sm"><i data-lucide="check" class="text-primary-purple w-5 h-5"></i></div>
+                            +300 vidas transformadas
+                        </li>
+                        <li class="flex items-center gap-4 text-slate-700 font-medium text-lg">
+                            <div class="bg-purple-50 p-2 rounded-full shadow-sm"><i data-lucide="check" class="text-primary-purple w-5 h-5"></i></div>
+                            Acompanhamento em todas as aulas
+                        </li>
+                        <li class="flex items-center gap-4 text-slate-700 font-medium text-lg">
+                            <div class="bg-purple-50 p-2 rounded-full shadow-sm"><i data-lucide="check" class="text-primary-purple w-5 h-5"></i></div>
+                            Exercícios adaptados para a sua realidade
+                        </li>
+                    </ul>
+
+                    <div class="flex justify-center md:justify-start">
+                        <a href="#" target="_blank" class="whatsapp-btn inline-flex items-center justify-center gap-3 bg-accent-green text-white font-bold py-4 px-10 rounded-full shadow-lg shadow-accent-green/30 hover:-translate-y-1 hover:shadow-xl transition-all active:scale-95 text-center w-full md:w-auto text-lg">
+                            <svg class="w-6 h-6 shrink-0 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                            Agende uma aula experimental!
+                        </a>
+                    </div>
+                </div>
+
+                <div class="relative animate-on-scroll scale-in delay-200 z-10">
+                    <div class="aspect-[4/5] rounded-[40px] overflow-hidden shadow-float border-8 border-white relative">
+                        <img 
+                            src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&q=80&w=1000" 
+                            alt="Fisioterapeuta atendendo paciente em ambiente limpo e profissional" 
+                            class="w-full h-full object-cover"
+                        />
+                    </div>
+                    
+                    <div class="absolute -bottom-6 -left-6 bg-white p-5 rounded-3xl shadow-float flex items-center gap-4 animate-bounce" style="animation-duration: 3s;">
+                        <div class="bg-purple-50 p-3 rounded-2xl">
+                            <i data-lucide="activity" class="text-primary-purple w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-500 font-medium">Resultados em</p>
+                            <p class="font-bold text-slate-900">Poucas Semanas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="px-6 py-20 bg-bg-main">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-16 text-slate-900 animate-on-scroll fade-up">Se você não aguenta mais:</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="flex flex-col items-center text-center p-8 bg-white rounded-[32px] shadow-sm border border-gray-100 animate-on-scroll fade-up">
+                        <div class="bg-red-50 p-4 rounded-full mb-6"><i data-lucide="frown" class="text-red-400 w-8 h-8"></i></div>
+                        <p class="text-lg text-slate-700 font-medium">Sentir dores todos os dias, até para deitar na cama</p>
+                    </div>
+                    <div class="flex flex-col items-center text-center p-8 bg-white rounded-[32px] shadow-sm border border-gray-100 animate-on-scroll fade-up delay-100">
+                        <div class="bg-red-50 p-4 rounded-full mb-6"><i data-lucide="users-round" class="text-red-400 w-8 h-8"></i></div>
+                        <p class="text-lg text-slate-700 font-medium">Treinar em academias que te deixam sozinha e sem suporte de um profissional</p>
+                    </div>
+                    <div class="flex flex-col items-center text-center p-8 bg-white rounded-[32px] shadow-sm border border-gray-100 animate-on-scroll fade-up delay-200">
+                        <div class="bg-red-50 p-4 rounded-full mb-6"><i data-lucide="trending-down" class="text-red-400 w-8 h-8"></i></div>
+                        <p class="text-lg text-slate-700 font-medium">Movimentos de pilates que pioram suas dores, ao invés de melhorá-las</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="px-6 py-24 bg-primary-purple text-white relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+            <div class="absolute bottom-0 left-0 w-96 h-96 bg-primary-dark/40 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+
+            <div class="max-w-4xl mx-auto relative z-10">
+                <h2 class="text-3xl md:text-5xl font-extrabold text-center mb-16 animate-on-scroll fade-up">Com o Estúdio Arethê, você vai:</h2>
+                <div class="space-y-6 mb-16">
+                    <div class="flex items-center gap-5 p-6 bg-white/10 backdrop-blur-sm rounded-3xl border border-white/20 animate-on-scroll fade-left">
+                        <div class="bg-white p-2 rounded-full text-primary-purple"><i data-lucide="check" class="w-6 h-6"></i></div>
+                        <p class="text-xl font-medium">Reduzir suas dores e se sentir mais feliz</p>
+                    </div>
+                    <div class="flex items-center gap-5 p-6 bg-white/10 backdrop-blur-sm rounded-3xl border border-white/20 animate-on-scroll fade-left delay-100">
+                        <div class="bg-white p-2 rounded-full text-primary-purple"><i data-lucide="check" class="w-6 h-6"></i></div>
+                        <p class="text-xl font-medium">Ter o acompanhamento individual de profissionais da área</p>
+                    </div>
+                    <div class="flex items-center gap-5 p-6 bg-white/10 backdrop-blur-sm rounded-3xl border border-white/20 animate-on-scroll fade-left delay-200">
+                        <div class="bg-white p-2 rounded-full text-primary-purple"><i data-lucide="check" class="w-6 h-6"></i></div>
+                        <p class="text-xl font-medium">Exercícios adaptados para a sua realidade sem exageros</p>
+                    </div>
+                </div>
+                <div class="flex justify-center animate-on-scroll fade-up delay-300">
+                    <a href="#" target="_blank" class="whatsapp-btn inline-flex items-center justify-center gap-3 bg-accent-green text-white font-bold py-4 px-12 rounded-full shadow-xl hover:scale-105 transition-transform w-full md:w-auto text-lg">
+                        <svg class="w-6 h-6 shrink-0 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                        Quero agendar uma aula experimental!
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="px-6 py-24 bg-white">
+            <div class="max-w-7xl mx-auto">
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-bg-main p-10 rounded-[32px] border border-gray-100 flex flex-col items-center text-center animate-on-scroll fade-up hover:shadow-soft transition-shadow">
+                        <div class="flex gap-1 mb-6 text-yellow-400">
+                            <i data-lucide="star" fill="currentColor" class="w-5 h-5"></i><i data-lucide="star" fill="currentColor" class="w-5 h-5"></i><i data-lucide="star" fill="currentColor" class="w-5 h-5"></i><i data-lucide="star" fill="currentColor" class="w-5 h-5"></i><i data-lucide="star" fill="currentColor" class="w-5 h-5"></i>
+                        </div>
+                        <p class="text-slate-600 text-lg leading-relaxed mb-8">"Depois de anos com dor na lombar, finalmente encontrei um lugar que me entende. O acompanhamento é impecável!"</p>
+                        <span class="font-bold text-primary-purple">Juliana M.</span>
+                    </div>
+                    <div class="bg-bg-main p-10 rounded-[32px] border border-gray-100 flex flex-col items-center text-center animate-on-scroll fade-up delay-100 hover:shadow-soft transition-shadow">
+                        <div class="flex gap-1 mb-6 text-yellow-400">
+                            <i data-lucide="star" fill="currentColor" class="w-5 h-5"></i><i data-lucide="star" fill="currentColor" class="w-5 h-5"></i><i data-lucide="star" fill="currentColor" class="w-5 h-5"></i><i data-lucide="star" fill="currentColor" class="w-5 h-5"></i><i data-lucide="star" fill="currentColor" class="w-5 h-5"></i>
+                        </div>
+                        <p class="text-slate-600 text-lg leading-relaxed mb-8">"O Estúdio Arethê mudou minha rotina. Treino sem medo de me machucar e as dores sumiram."</p>
+                        <span class="font-bold text-primary-purple">Marcos P.</span>
+                    </div>
+                    <div class="bg-bg-main p-10 rounded-[32px] border border-gray-100 flex flex-col items-center text-center animate-on-scroll fade-up delay-200 hover:shadow-soft transition-shadow">
+                        <div class="flex gap-1 mb-6 text-yellow-400">
+                            <i data-lucide="star" fill="currentColor" class="w-5 h-5"></i><i data-lucide="star" fill="currentColor" class="w-5 h-5"></i><i data-lucide="star" fill="currentColor" class="w-5 h-5"></i><i data-lucide="star" fill="currentColor" class="w-5 h-5"></i><i data-lucide="star" fill="currentColor" class="w-5 h-5"></i>
+                        </div>
+                        <p class="text-slate-600 text-lg leading-relaxed mb-8">"Atenção total em cada movimento. Sinto que cada exercício foi pensado exatamente para o que eu preciso."</p>
+                        <span class="font-bold text-primary-purple">Fernanda S.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="px-6 py-24 bg-bg-main">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-20 animate-on-scroll fade-up">
+                    <span class="text-primary-purple font-bold tracking-widest text-sm uppercase bg-purple-100 px-4 py-2 rounded-full">SIMPLES E PRÁTICO</span>
+                    <h2 class="text-3xl md:text-5xl font-extrabold mt-6 text-slate-900">Como funciona a 1ª aula na Arethê?</h2>
+                </div>
+                
+                <div class="grid gap-8">
+                    <div class="bg-white p-8 rounded-[32px] shadow-sm border border-gray-100 flex flex-col md:flex-row items-center gap-6 animate-on-scroll fade-up">
+                        <div class="w-16 h-16 bg-purple-50 text-primary-purple rounded-full flex items-center justify-center font-black text-2xl shrink-0">1</div>
+                        <div class="text-center md:text-left">
+                            <h3 class="text-2xl font-bold mb-2 text-slate-900">Avaliação física individual</h3>
+                            <p class="text-slate-600 text-lg">Entendemos sua rotina, suas dores e histórico.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-[32px] shadow-sm border border-gray-100 flex flex-col md:flex-row items-center gap-6 animate-on-scroll fade-up delay-100">
+                        <div class="w-16 h-16 bg-purple-50 text-primary-purple rounded-full flex items-center justify-center font-black text-2xl shrink-0">2</div>
+                        <div class="text-center md:text-left">
+                            <h3 class="text-2xl font-bold mb-2 text-slate-900">Analisamos seus movimentos</h3>
+                            <p class="text-slate-600 text-lg">Observamos sua postura, sua mobilidade e padrões.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-[32px] shadow-sm border border-gray-100 flex flex-col md:flex-row items-center gap-6 animate-on-scroll fade-up delay-200">
+                        <div class="w-16 h-16 bg-purple-50 text-primary-purple rounded-full flex items-center justify-center font-black text-2xl shrink-0">3</div>
+                        <div class="text-center md:text-left">
+                            <h3 class="text-2xl font-bold mb-2 text-slate-900">Exercícios direcionados</h3>
+                            <p class="text-slate-600 text-lg">Você já inicia com exercícios pensados para a sua realidade atual.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-[32px] shadow-sm border border-gray-100 flex flex-col md:flex-row items-center gap-6 animate-on-scroll fade-up delay-300">
+                        <div class="w-16 h-16 bg-purple-50 text-primary-purple rounded-full flex items-center justify-center font-black text-2xl shrink-0">4</div>
+                        <div class="text-center md:text-left">
+                            <h3 class="text-2xl font-bold mb-2 text-slate-900">Suporte claro do início ao fim</h3>
+                            <p class="text-slate-600 text-lg">Você sai mais aliviada e entendendo tudo para parar de sentir aquela dor chata.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-center mt-16 animate-on-scroll fade-up">
+                    <a href="#" target="_blank" class="whatsapp-btn inline-flex items-center justify-center gap-3 bg-accent-green text-white font-bold py-4 px-12 rounded-full shadow-lg hover:brightness-110 transition-all active:scale-95 text-center w-full md:w-auto text-lg">
+                        <svg class="w-6 h-6 shrink-0 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                        Quero agendar uma aula experimental!
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="px-6 py-24 bg-white overflow-hidden border-t border-gray-100">
+            <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+                <div class="animate-on-scroll fade-right">
+                    <h2 class="text-3xl md:text-5xl font-extrabold mb-8 text-slate-900">QUEM É A ARETHÊ?</h2>
+                    <p class="text-xl text-slate-600 mb-6 leading-relaxed font-light">
+                        Aqui você não é tratado como mais um aluno... 
+                    </p>
+                    <p class="text-xl text-slate-600 mb-8 leading-relaxed font-light">
+                        A ARETHÊ é um centro integrado de saúde, onde o cuidado é pensado de forma completa:
+                    </p>
+                    <ul class="space-y-6 mb-10">
+                        <li class="flex items-center gap-4 text-slate-700 font-medium text-lg">
+                            <div class="bg-purple-50 p-2 rounded-full shadow-sm"><i data-lucide="check" class="text-primary-purple w-5 h-5"></i></div>
+                            Exercícios com acompanhamento diário
+                        </li>
+                        <li class="flex items-center gap-4 text-slate-700 font-medium text-lg">
+                            <div class="bg-purple-50 p-2 rounded-full shadow-sm"><i data-lucide="check" class="text-primary-purple w-5 h-5"></i></div>
+                            Olhar individual para cada aluno
+                        </li>
+                        <li class="flex items-center gap-4 text-slate-700 font-medium text-lg">
+                            <div class="bg-purple-50 p-2 rounded-full shadow-sm"><i data-lucide="check" class="text-primary-purple w-5 h-5"></i></div>
+                            Aulas que respeitam seu corpo e sua rotina
+                        </li>
+                    </ul>
+                    <div class="bg-purple-50 border-l-4 border-primary-purple p-6 rounded-r-2xl">
+                        <p class="text-lg font-bold text-primary-purple">
+                            O único centro integrado que traz um acompanhamento individual do início ao fim!
+                        </p>
+                    </div>
+                </div>
+                <div class="rounded-[40px] overflow-hidden shadow-float animate-on-scroll fade-left aspect-[4/5] border border-gray-100">
+                    <img 
+                        src="https://images.unsplash.com/photo-1593079831268-3381b0db4a77?auto=format&fit=crop&q=80&w=1000" 
+                        alt="Equipe do Estúdio Arethê" 
+                        class="w-full h-full object-cover"
+                    />
+                </div>
+            </div>
+        </section>
+
+        <section class="px-6 py-24 bg-bg-main border-t border-gray-100">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16 animate-on-scroll fade-up">
+                    <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900">Para quem a ARETHÊ é indicada</h2>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-white p-8 rounded-[32px] shadow-sm border border-gray-100 flex items-start gap-6 animate-on-scroll fade-up">
+                        <div class="w-12 h-12 bg-green-light text-accent-green rounded-full flex items-center justify-center shrink-0">
+                            <i data-lucide="check" class="w-6 h-6"></i>
+                        </div>
+                        <p class="text-xl font-bold text-slate-700 mt-2">Pessoas com dores recorrentes (lombar, joelho, cervical)</p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-[32px] shadow-sm border border-gray-100 flex items-start gap-6 animate-on-scroll fade-up delay-100">
+                        <div class="w-12 h-12 bg-green-light text-accent-green rounded-full flex items-center justify-center shrink-0">
+                            <i data-lucide="check" class="w-6 h-6"></i>
+                        </div>
+                        <p class="text-xl font-bold text-slate-700 mt-2">Quem já tentou de tudo e não conseguiu diminuir suas dores</p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-[32px] shadow-sm border border-gray-100 flex items-start gap-6 animate-on-scroll fade-up delay-200">
+                        <div class="w-12 h-12 bg-green-light text-accent-green rounded-full flex items-center justify-center shrink-0">
+                            <i data-lucide="check" class="w-6 h-6"></i>
+                        </div>
+                        <p class="text-xl font-bold text-slate-700 mt-2">Quem busca o suporte adequado para cuidar do corpo</p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-[32px] shadow-sm border border-gray-100 flex items-start gap-6 animate-on-scroll fade-up delay-300">
+                        <div class="w-12 h-12 bg-green-light text-accent-green rounded-full flex items-center justify-center shrink-0">
+                            <i data-lucide="check" class="w-6 h-6"></i>
+                        </div>
+                        <p class="text-xl font-bold text-slate-700 mt-2">Quem deseja se sentir mais feliz e realizada, sem dores</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="px-6 py-24 bg-white border-t border-gray-100">
+            <div class="max-w-3xl mx-auto animate-on-scroll fade-up">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-16 text-slate-900">Dúvidas comuns</h2>
+                <div class="space-y-4">
+                    
+                    <div class="bg-bg-main rounded-3xl overflow-hidden border border-gray-100 shadow-sm">
+                        <button class="faq-btn w-full px-8 py-6 flex items-center justify-between text-left font-bold text-lg text-slate-900 hover:bg-gray-50 transition-colors">
+                            “Preciso ter experiência?”
+                            <div class="bg-purple-50 p-2 rounded-full"><i data-lucide="chevron-down" class="chevron text-primary-purple transition-transform duration-300 w-5 h-5"></i></div>
+                        </button>
+                        <div class="faq-wrapper">
+                            <div class="faq-inner">
+                                <div class="px-8 pb-6 text-slate-600 text-lg">
+                                    Não. A aula é adaptada ao seu nível atual, respeitando o seu corpo.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-bg-main rounded-3xl overflow-hidden border border-gray-100 shadow-sm">
+                        <button class="faq-btn w-full px-8 py-6 flex items-center justify-between text-left font-bold text-lg text-slate-900 hover:bg-gray-50 transition-colors">
+                            “E se eu tiver dor no dia?”
+                            <div class="bg-purple-50 p-2 rounded-full"><i data-lucide="chevron-down" class="chevron text-primary-purple transition-transform duration-300 w-5 h-5"></i></div>
+                        </button>
+                        <div class="faq-wrapper">
+                            <div class="faq-inner">
+                                <div class="px-8 pb-6 text-slate-600 text-lg">
+                                    A aula começa com avaliação justamente para respeitar seus limites e focar no alívio da dor.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-bg-main rounded-3xl overflow-hidden border border-gray-100 shadow-sm">
+                        <button class="faq-btn w-full px-8 py-6 flex items-center justify-between text-left font-bold text-lg text-slate-900 hover:bg-gray-50 transition-colors">
+                            “As aulas são em grupo?”
+                            <div class="bg-purple-50 p-2 rounded-full"><i data-lucide="chevron-down" class="chevron text-primary-purple transition-transform duration-300 w-5 h-5"></i></div>
+                        </button>
+                        <div class="faq-wrapper">
+                            <div class="faq-inner">
+                                <div class="px-8 pb-6 text-slate-600 text-lg">
+                                    Sim, mas com acompanhamento individualizado e rigoroso durante toda a aula.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="px-6 py-32 bg-primary-dark text-center animate-on-scroll fade-up relative overflow-hidden">
+             <div class="absolute top-0 right-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIj48Y2lyY2xlIGN4PSIyMDAiIGN5PSIyMDAiIHI9IjIwMCIgZmlsbD0icmdiYSgyNTUsIDI1NSwgMjU1LCAwLjA1KSIvPjwvc3ZnPg==')] bg-no-repeat bg-right-top opacity-30 pointer-events-none"></div>
+
+            <div class="max-w-4xl mx-auto relative z-10">
+                <h2 class="text-4xl md:text-5xl font-extrabold mb-8 text-white">Se você quer parar de tentar sozinho e começar com direção</h2>
+                <p class="text-xl text-purple-100 mb-12 font-light">
+                    A aula experimental é o primeiro passo para organizar seu corpo com critério.
+                </p>
+                <a href="#" target="_blank" class="whatsapp-btn inline-flex items-center justify-center gap-3 bg-accent-green text-white font-extrabold py-5 px-14 rounded-full shadow-2xl hover:scale-105 transition-all text-xl w-full md:w-auto">
+                    <svg class="w-6 h-6 shrink-0 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                    Agendar aula experimental no WhatsApp
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-16 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <span class="text-3xl font-extrabold text-white mb-6 block tracking-tighter">ARETHÊ</span>
+            <p class="mb-10 max-w-md mx-auto text-base">
+                Centro integrado de fisioterapia e exercícios. Cuidado individualizado para uma vida sem dores.
+            </p>
+            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-center items-center gap-6 text-sm">
+                <p>© 2026 Estúdio Arethê. Todos os direitos reservados.</p>
+                <span class="hidden md:inline text-slate-700">|</span>
+                <p>Rua Exemplo, 123 - Bairro - Cidade/UF</p>
+            </div>
+        </div>
+    </footer>
+
+    <a href="#" target="_blank" class="whatsapp-btn md:hidden fixed bottom-6 right-6 w-16 h-16 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-float z-50 hover:scale-110 transition-transform border-2 border-white">
+        <svg class="w-8 h-8 shrink-0 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+    </a>
+
+    <script>
+        lucide.createIcons();
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // === 1. CONFIGURAÇÃO DO WHATSAPP ===
+            const telefone = "5515991713819"; 
+            const mensagem = "Olá! Gostaria de agendar uma aula experimental e saber mais sobre o Estúdio Arethê.";
+            const urlWhatsApp = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
+
+            const botoesWhatsApp = document.querySelectorAll('.whatsapp-btn');
+            botoesWhatsApp.forEach(btn => {
+                btn.href = urlWhatsApp;
+            });
+
+            // === 2. ANIMAÇÕES DE SCROLL ===
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+
+            // === 3. ACORDEÃO DO FAQ COM ANIMAÇÃO ===
+            const faqButtons = document.querySelectorAll('.faq-btn');
+            faqButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const wrapper = button.nextElementSibling; // Pega a div .faq-wrapper
+                    const chevron = button.querySelector('.chevron');
+                    
+                    // Fecha todos os outros que não forem o atual
+                    document.querySelectorAll('.faq-wrapper').forEach(w => {
+                        if (w !== wrapper) {
+                            w.classList.remove('is-open');
+                            w.previousElementSibling.querySelector('.chevron').classList.remove('rotate-180');
+                        }
+                    });
+
+                    // Alterna o atual
+                    wrapper.classList.toggle('is-open');
+                    chevron.classList.toggle('rotate-180');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
